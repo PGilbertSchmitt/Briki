@@ -18,7 +18,7 @@ module.exports = {
   mode: "development",
   entry: {
     main: "./src/main.ts",
-    renderer: "./src/react/friki.tsx"
+    renderer: "./src/react/briki.tsx"
   },
   output: {
     path: path.resolve('dist'),
