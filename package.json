@@ -1,5 +1,5 @@
 {
-  "name": "tiki",
+  "name": "friki",
   "version": "0.0.0",
   "description": "Electron app that acts as a personal wiki",
   "main": "dist/main.js",
