@@ -55,6 +55,7 @@
       "always"
     ],
     "@typescript-eslint/type-annotation-spacing": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "react/prop-types": [
       0
     ],

@@ -1,4 +1,5 @@
 const path = require("path");
+const fixDefaultImportPlugin = require("webpack-fix-default-import-plugin");
 const tsConfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 var babelOptions = {
@@ -18,7 +19,7 @@ module.exports = {
   mode: "development",
   entry: {
     main: "./src/main.ts",
-    renderer: "./src/react/briki.tsx"
+    renderer: "./src/briki.tsx"
   },
   output: {
     path: path.resolve('dist'),
@@ -33,6 +34,9 @@ module.exports = {
     plugins: [
       new tsConfigPathsPlugin()
     ]
+  },
+  externals: {
+    "sqlite3": "commonjs sqlite3"
   },
   devtool: 'source-maps',
   module: {
@@ -56,5 +60,8 @@ module.exports = {
   node: {
     fs: "empty",
     __dirname: false,
-  }
+  },
+  plugins: [
+    new fixDefaultImportPlugin(),
+  ]
 };

@@ -1,4 +1,6 @@
 import { app, BrowserWindow } from 'electron';
+import sqlite3, { Database as DB } from 'sqlite3';
+import { open } from 'sqlite';
 
 function createWindow() {
   // Create the browser window.
@@ -16,6 +18,15 @@ function createWindow() {
 
   // Open the DevTools.
   win.webContents.openDevTools();
+
+  console.log(sqlite3);
+
+  open({
+    driver: DB,
+    filename: 'doink.sqlite'
+  }).then(() => console.log('NICE')).catch(
+    e => console.log('NOT NICE, BUT STILL KINDA NICE', e)
+  );
 }
 
 // This method will be called when Electron has finished
