@@ -1,7 +1,10 @@
 import { app, BrowserWindow } from 'electron';
+
 import { initializeDbService } from './db_service';
+import { initializeConfigService } from './config_service';
 
 const dbService = initializeDbService();
+initializeConfigService();
 
 const createWindow = () => {
   // Create the browser window.

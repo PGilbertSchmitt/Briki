@@ -4,9 +4,6 @@ export enum Channels {
   EXE_QUERY = 'EXE_QUERY',
 }
 
-export type SuccessPayload = {
+export type DbPayload = {
   success: true
-} | {
-  success: false,
-  error: string
 };
