@@ -19,6 +19,15 @@
     "paths": {
       "@src/*": [
         "./src/*",
+      ],
+      "@common/*": [
+        "./src/common/*"
+      ],
+      "@main/*": [
+        "./src/main/*"
+      ],
+      "@renderer/*": [
+        "./src/renderer/*"
       ]
     }
   },

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import * as rootStore from '@src/store/root_store';
+import * as rootStore from '@renderer/store/root_store';
 
 export const Root: FC = () => {
   /* eslint-disable */

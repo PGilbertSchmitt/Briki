@@ -4,7 +4,14 @@ const tsConfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 var babelOptions = {
   presets: [
-    "@babel/preset-env",
+    [
+      "@babel/preset-env",
+      {
+        targets: {
+          esmodules: true
+        }
+      }
+    ],
     "@babel/preset-typescript",
     "@babel/preset-react"
   ],
@@ -18,8 +25,8 @@ module.exports = {
   target: "electron-renderer",
   mode: "development",
   entry: {
-    main: "./src/main.ts",
-    renderer: "./src/briki.tsx"
+    main: "./src/main/main.ts",
+    renderer: "./src/renderer/briki.tsx"
   },
   output: {
     path: path.resolve('dist'),

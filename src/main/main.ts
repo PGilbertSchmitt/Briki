@@ -1,8 +1,9 @@
 import { app, BrowserWindow } from 'electron';
-import sqlite3, { Database as DB } from 'sqlite3';
-import { open } from 'sqlite';
+import { initializeDbService } from './db_service';
 
-function createWindow() {
+const dbService = initializeDbService();
+
+const createWindow = () => {
   // Create the browser window.
   const win = new BrowserWindow({
     width: 800,
@@ -18,16 +19,7 @@ function createWindow() {
 
   // Open the DevTools.
   win.webContents.openDevTools();
-
-  console.log(sqlite3);
-
-  open({
-    driver: DB,
-    filename: 'doink.sqlite'
-  }).then(() => console.log('NICE')).catch(
-    e => console.log('NOT NICE, BUT STILL KINDA NICE', e)
-  );
-}
+};
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -36,9 +28,11 @@ app.whenReady().then(createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
+  
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
+    dbService.db?.close();
     app.quit();
   }
 });

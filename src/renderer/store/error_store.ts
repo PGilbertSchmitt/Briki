@@ -1,5 +1,5 @@
 import { head, drop } from 'ramda';
-import { IError } from '@src/interfaces/error';
+import { IError } from '@common/error';
 
 export const createErrorStore = () => {
   let errorQueue: IError[] = [];
