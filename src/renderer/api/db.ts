@@ -1,18 +1,19 @@
 /**
- * Interface for renderer process to communicate with main process's DB service
+ * Interface for renderer process to communicate with main process's DB controller
  */
 
-import { ipcRenderer } from 'electron';
-import { Channels, SuccessPayload } from '@common/db';
+import { Channels, DbPayload } from '@common/db';
+import { handleRequest } from './request_handler';
 
 export const loadDb = async (dbName: string) => {
-  return (await ipcRenderer.invoke(Channels.LOAD_DB, dbName)) as SuccessPayload;
+  return await handleRequest<DbPayload>(Channels.LOAD_DB, dbName);
 };
 
 export const closeDb = async () => {
-  return (await ipcRenderer.invoke(Channels.CLOSE_DB)) as SuccessPayload;
+  return await handleRequest<DbPayload>(Channels.CLOSE_DB);
 };
 
+// Where T is the shape of the successful result
 export const executeQuery = async <T>(query: string) => {
-  return (await ipcRenderer.invoke(Channels.EXE_QUERY, query)) as T;
+  return await handleRequest<T>(Channels.EXE_QUERY, query);
 };

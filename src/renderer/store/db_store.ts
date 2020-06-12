@@ -3,7 +3,7 @@ import * as DbApi from '@renderer/api/db';
 export const createDbStore = () => {
   const dbState = {
     loaded: false,
-    dbName: null as string | null
+    dbName: null as string | null,
   };
 
   const loadDb = async () => {
@@ -13,7 +13,7 @@ export const createDbStore = () => {
       dbState.dbName = 'freik.sqlite';
     } else {
       dbState.loaded = false;
-      console.log('Error opening freik.sqlite');
+      console.log(`Error opening freik.sqlite: ${result.error}`);
     }
   };
 
