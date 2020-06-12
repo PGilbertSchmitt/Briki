@@ -1,5 +1,5 @@
 /**
- * SqliteDB service managed by main
+ * SqliteDB controller managed by main
  */
 
 import sqlite3 from 'sqlite3';
@@ -9,7 +9,7 @@ import { Channels, DbPayload } from '@common/db';
 
 export type Db = Database<sqlite3.Database, sqlite3.Statement> | null;
 
-export const initializeDbService = () => {
+export const initializeDbController = () => {
   console.log('Initializing DB...');
   
   const dbState = {

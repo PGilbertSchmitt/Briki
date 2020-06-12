@@ -1,12 +1,12 @@
 /**
- * Config service managed by main
+ * Config controller managed by main
  */
 
 import Store from 'electron-store';
 import { Channels, Config, ConfigPayload } from '@common/config';
 import { registerHandler } from './response_handler';
 
-export const initializeConfigService = () => {
+export const initializeConfigController = () => {
   console.log('Initializing config...');
   
   const store = new Store<Config>({

@@ -1,10 +1,10 @@
 import { app, BrowserWindow } from 'electron';
 
-import { initializeDbService } from './db_service';
-import { initializeConfigService } from './config_service';
+import { initializeDbController } from './db_controller';
+import { initializeConfigController } from './config_controller';
 
-const dbService = initializeDbService();
-initializeConfigService();
+const dbStore = initializeDbController();
+initializeConfigController();
 
 const createWindow = () => {
   // Create the browser window.
@@ -35,7 +35,7 @@ app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    dbService.db?.close();
+    dbStore.db?.close();
     app.quit();
   }
 });
