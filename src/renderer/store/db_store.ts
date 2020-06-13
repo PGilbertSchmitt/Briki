@@ -17,10 +17,6 @@ export const createDbStore = () => {
     }
   };
 
-  loadDb().then(() =>
-    console.log(dbState)
-  );
-
   return {
     dbState,
     dbHooks: {

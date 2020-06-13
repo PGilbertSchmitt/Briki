@@ -2,11 +2,13 @@ export enum Channels {
   GET_CONFIG = 'GET_CONFIG'
 }
 
+export interface IDatabase {
+  name: string,
+  file: string,
+}
+
 export type Config = {
-  databases: Array<{
-    name: string,
-    file: string,
-  }>
+  databases: IDatabase[]
 };
 
 export type ConfigPayload = {

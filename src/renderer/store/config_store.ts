@@ -18,8 +18,6 @@ export const createConfigStore = () => {
     }
   };
 
-  loadConfig().then(() => console.log(configState));
-
   return {
     configState,
     configHooks: {
