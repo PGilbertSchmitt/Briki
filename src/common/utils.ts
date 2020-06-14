@@ -3,6 +3,6 @@ export enum Channels {
 }
 
 export interface DirPayload {
-  success: true
+  success: true;
   dir: string;
 }

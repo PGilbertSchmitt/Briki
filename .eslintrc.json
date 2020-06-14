@@ -56,6 +56,20 @@
     ],
     "@typescript-eslint/type-annotation-spacing": "error",
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/prefer-as-const": 2,
+    "@typescript-eslint/member-delimiter-style": [
+      2,
+      {
+        "multiline": {
+          "delimiter": "semi",
+          "requireLast": true
+        },
+        "singleline": {
+          "delimiter": "semi",
+          "requireLast": true
+        }
+      }
+    ],
     "react/prop-types": [
       0
     ],
