@@ -2,15 +2,16 @@
  * Interface for renderer process to communicate with main process's DB controller
  */
 
-import { Channels, DbPayload } from '@common/db';
+import { Channels } from '@common/db';
+import { SuccessPayload } from '@common/response';
 import { handleRequest } from './request_handler';
 
 export const loadDb = async (dbName: string) => {
-  return await handleRequest<DbPayload>(Channels.LOAD_DB, dbName);
+  return await handleRequest<SuccessPayload>(Channels.LOAD_DB, dbName);
 };
 
 export const closeDb = async () => {
-  return await handleRequest<DbPayload>(Channels.CLOSE_DB);
+  return await handleRequest<SuccessPayload>(Channels.CLOSE_DB);
 };
 
 // Where T is the shape of the successful result

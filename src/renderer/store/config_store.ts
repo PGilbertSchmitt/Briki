@@ -1,5 +1,5 @@
-import { Config } from '@common/config';
-import * as ConfigApi from '@renderer/api/config';
+import { Config, IDatabase } from '@common/config';
+import * as ConfigApi from '@renderer/api/config_api';
 
 export const createConfigStore = () => {
   const configState = {
@@ -18,10 +18,22 @@ export const createConfigStore = () => {
     }
   };
 
+  const saveDb = async (db: IDatabase) => {
+    console.log(`Saving a new database to ${db.file}`);
+    const result = await ConfigApi.saveNewDB(db);
+    if (result.success) {
+      // Reload the config
+      loadConfig();
+    } else {
+      console.log(`Error saving new DB config: ${result.error}`);
+    }
+  };
+
   return {
     configState,
     configHooks: {
-      loadConfig
+      loadConfig,
+      saveDb,
     }
   };
 };

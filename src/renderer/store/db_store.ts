@@ -1,4 +1,4 @@
-import * as DbApi from '@renderer/api/db';
+import * as DbApi from '@renderer/api/db_api';
 
 export const createDbStore = () => {
   const dbState = {

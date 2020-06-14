@@ -3,7 +3,8 @@
  */
 
 import Store from 'electron-store';
-import { Channels, Config, ConfigPayload } from '@common/config';
+import { Channels, Config, ConfigPayload, IDatabase } from '@common/config';
+import { SuccessPayload } from '@common/response';
 import { registerHandler } from './response_handler';
 
 export const initializeConfigController = () => {
@@ -22,6 +23,12 @@ export const initializeConfigController = () => {
         databases: store.get('databases')
       }
     };
+  });
+
+  registerHandler<[IDatabase]>(Channels.SAVE_DB, async (db): Promise<SuccessPayload> => {
+    const current = store.get('databases');
+    store.set('databases', [ ...current, db ]);
+    return { success: true };
   });
 
   console.log('Config initialized');

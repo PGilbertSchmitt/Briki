@@ -5,7 +5,8 @@
 import sqlite3 from 'sqlite3';
 import { open, Database } from 'sqlite';
 import { registerHandler } from './response_handler';
-import { Channels, DbPayload } from '@common/db';
+import { SuccessPayload } from '@common/response';
+import { Channels } from '@common/db';
 
 export type Db = Database<sqlite3.Database, sqlite3.Statement> | null;
 
@@ -16,7 +17,7 @@ export const initializeDbController = () => {
     db: null as Db
   };
 
-  registerHandler<[string]>(Channels.LOAD_DB, async (dbName): Promise<DbPayload> => {
+  registerHandler<[string]>(Channels.LOAD_DB, async (dbName): Promise<SuccessPayload> => {
     dbState.db = await open({
       driver: sqlite3.Database,
       filename: dbName
@@ -24,7 +25,7 @@ export const initializeDbController = () => {
     return { success: true };
   });
 
-  registerHandler(Channels.CLOSE_DB, async (): Promise<DbPayload> => {
+  registerHandler(Channels.CLOSE_DB, async (): Promise<SuccessPayload> => {
     await dbState.db?.close();
     return { success: true };
   });

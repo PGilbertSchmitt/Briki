@@ -3,7 +3,3 @@ export enum Channels {
   CLOSE_DB = 'CLOSE_DB',
   EXE_QUERY = 'EXE_QUERY',
 }
-
-export type DbPayload = {
-  success: true
-};

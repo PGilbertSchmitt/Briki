@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron';
 
 import { initializeDbController } from './db_controller';
 import { initializeConfigController } from './config_controller';
+import { initializeUtilController } from './util_controller';
 import { darkTheme } from '@common/muiTheme';
 
 const dbStore = initializeDbController();
@@ -17,6 +18,9 @@ const createWindow = () => {
       nodeIntegration: true
     }
   });
+
+  // Requires parent window for initialization
+  initializeUtilController(win);
 
   // `loadFile` starts relative to the root of the project when running `electron .`
   win.loadFile('dist/index.html');
