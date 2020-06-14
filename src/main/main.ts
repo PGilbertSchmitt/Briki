@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron';
 
 import { initializeDbController } from './db_controller';
 import { initializeConfigController } from './config_controller';
+import { darkTheme } from '@common/muiTheme';
 
 const dbStore = initializeDbController();
 initializeConfigController();
@@ -11,7 +12,7 @@ const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: darkTheme.palette.background.default,
     webPreferences: {
       nodeIntegration: true
     }

@@ -1,7 +1,9 @@
 import React, { FC, useEffect } from 'react';
+import { ThemeProvider } from '@material-ui/core';
 import * as rootStore from '@renderer/store/root_store';
 import { refresh } from '@renderer/render_state';
 import { Config } from './components/config/config';
+import { darkTheme } from '@common/muiTheme';
 
 export const Root: FC = () => {
   /* eslint-disable */
@@ -20,9 +22,11 @@ export const Root: FC = () => {
   if (configState.loaded && configState.config?.databases ) {
     console.log('b');
     return (
-      <Config databases={configState.config.databases}>
-        Hello
-      </Config>
+      <ThemeProvider theme={darkTheme}>
+        <Config databases={configState.config.databases}>
+          Hello
+        </Config>
+      </ThemeProvider>
     );
   } else {
     return null;
