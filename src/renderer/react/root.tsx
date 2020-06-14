@@ -1,4 +1,5 @@
 import React, { FC, useEffect } from 'react';
+import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core';
 import * as rootStore from '@renderer/store/root_store';
 import { refresh } from '@renderer/render_state';
@@ -23,9 +24,16 @@ export const Root: FC = () => {
     console.log('b');
     return (
       <ThemeProvider theme={darkTheme}>
-        <Config databases={configState.config.databases}>
-          Hello
-        </Config>
+        <HashRouter>
+          <Switch>
+            <Route exact path='/'>
+              {console.log('Hold on just a hot second')}
+              <Redirect to='/database' />
+            </Route>
+
+            <Route path='/database' component={Config} />
+          </Switch>
+        </HashRouter>
       </ThemeProvider>
     );
   } else {
