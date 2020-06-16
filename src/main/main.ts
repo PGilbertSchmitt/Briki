@@ -3,7 +3,7 @@ import { app, BrowserWindow } from 'electron';
 import { initializeDbController } from './db_controller';
 import { initializeConfigController } from './config_controller';
 import { initializeUtilController } from './util_controller';
-import { darkTheme } from '@common/muiTheme';
+import { darkTheme } from '@common/theme';
 
 const dbStore = initializeDbController();
 initializeConfigController();
