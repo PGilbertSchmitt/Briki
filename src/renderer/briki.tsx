@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import { Root } from './react/root';
+import { Root } from './components/root';
 import { renderState } from './render_state';
 
 const paint = () => {

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import * as rootStore from '@renderer/store/root_store';
-import { WikiSelect } from './components/database/wikiSelect';
+import { WikiSelect } from './database/wikiSelect';
 
 export const Root: FC = () => {
   /* eslint-disable */
