@@ -61,6 +61,19 @@ module.exports = {
         exclude: /node_modules/,
         enforce: "pre",
         use: "source-map-loader"
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        enforce: "pre",
+        use: {
+          loader: "eslint-loader",
+          options: {
+            cache: true,
+            failOnError: true,
+            failOnWarning: false
+          }
+        }
       }
     ]
   },

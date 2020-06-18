@@ -1,0 +1,8 @@
+{
+  "watch": [
+    "dist/main.js",
+    "dist/index.html",
+    "dist/renderer.js"
+  ],
+  "exec": "electron ."
+}
