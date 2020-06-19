@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
-import { List } from 'semantic-ui-react';
+import { List, Button } from 'semantic-ui-react';
 
-import { IDatabase } from '@src/common/config';
+import { IDatabase } from '@common/config';
+import { configHooks } from '@renderer/store/root_store';
+import { refresh } from '@renderer/render_state';
 
 export const SelectDatabase: FC<{dbs: IDatabase[];}> = ({ dbs }) => {
   return (
@@ -11,6 +13,13 @@ export const SelectDatabase: FC<{dbs: IDatabase[];}> = ({ dbs }) => {
           <List.Content>
             <List.Header>{db.name}</List.Header>
             <List.Description>{db.file}</List.Description>
+            <Button
+              type='button'
+              onClick={async () => {
+                await configHooks.removeDb(db.file);
+                refresh();
+              }}
+            >Delete</Button>
           </List.Content>
         </List.Item>
       ))}

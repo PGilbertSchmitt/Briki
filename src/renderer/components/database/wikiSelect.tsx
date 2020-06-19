@@ -31,10 +31,10 @@ export const WikiSelect: FC = () => {
       {databases.length > 0 && (
         <Container>
           <h2>Wikis</h2>
-          <Divider />
           <SelectDatabase dbs={store.configState.config.databases} />
         </Container>
       )}
+      <Divider />
       <CreateDatabase />
     </SelectWrapper>
   );

@@ -1,12 +1,14 @@
 import { app, BrowserWindow } from 'electron';
 
+import { initializeDbService } from './db_service';
 import { initializeDbController } from './db_controller';
 import { initializeConfigController } from './config_controller';
 import { initializeUtilController } from './util_controller';
 import { darkTheme } from '@common/theme';
 
-const dbStore = initializeDbController();
-initializeConfigController();
+const dbService = initializeDbService();
+initializeDbController(dbService);
+initializeConfigController(dbService);
 
 const createWindow = () => {
   // Create the browser window.
@@ -18,7 +20,7 @@ const createWindow = () => {
       nodeIntegration: true
     }
   });
-
+  
   // Requires parent window for initialization
   initializeUtilController(win);
 
@@ -35,12 +37,12 @@ const createWindow = () => {
 app.whenReady().then(createWindow);
 
 // Quit when all windows are closed.
-app.on('window-all-closed', () => {
+app.on('window-all-closed', async () => {
   
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    dbStore.db?.close();
+    await dbService.close();
     app.quit();
   }
 });

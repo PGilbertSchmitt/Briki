@@ -1,5 +1,7 @@
 import { Config, IDatabase } from '@common/config';
 import * as ConfigApi from '@renderer/api/config_api';
+import { SuccessPayload } from '@src/common/response';
+import { ErrorPayload } from '@src/common/error';
 
 export const createConfigStore = () => {
   const configState = {
@@ -10,6 +12,7 @@ export const createConfigStore = () => {
   const loadConfig = async () => {
     const result = await ConfigApi.loadConfig();
     if (result.success) {
+      console.log(`Loaded config: ${JSON.stringify(result.config)}`);
       configState.loaded = true;
       configState.config = result.config;
     } else {
@@ -18,15 +21,31 @@ export const createConfigStore = () => {
     }
   };
 
+  const handleSuccessResult = async (result: SuccessPayload | ErrorPayload, action: string) => {
+    if (result.success) {
+      await loadConfig();
+    } else {
+      // Push error notification here
+      console.log(`Error during db config action [${action}]: ${result.error}`);
+    }
+  };
+
   const saveDb = async (db: IDatabase) => {
     console.log(`Saving a new database to ${db.file}`);
     const result = await ConfigApi.saveNewDB(db);
-    if (result.success) {
-      // Reload the config
-      loadConfig();
-    } else {
-      console.log(`Error saving new DB config: ${result.error}`);
-    }
+    await handleSuccessResult(result, 'save');
+  };
+
+  const registerDb = async (db: IDatabase) => {
+    console.log(`Registering database ${db.file}`);
+    const result = await ConfigApi.registerDb(db);
+    await handleSuccessResult(result, 'register');
+  };
+
+  const removeDb = async (file: string) => {
+    console.log(`Removing ${file} from config`);
+    const result = await ConfigApi.removeDb(file);
+    await handleSuccessResult(result, 'remove');
   };
 
   return {
@@ -34,6 +53,8 @@ export const createConfigStore = () => {
     configHooks: {
       loadConfig,
       saveDb,
+      registerDb,
+      removeDb,
     }
   };
 };

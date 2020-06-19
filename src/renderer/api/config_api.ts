@@ -13,3 +13,11 @@ export const loadConfig = async () => {
 export const saveNewDB = async (db: IDatabase) => {
   return await handleRequest<SuccessPayload>(Channels.SAVE_DB, db);
 };
+
+export const registerDb = async (db: IDatabase) => {
+  return await handleRequest<SuccessPayload>(Channels.REGISTER_DB, db);
+};
+
+export const removeDb = async (filename: string) => {
+  return await handleRequest<SuccessPayload>(Channels.REMOVE_DB, filename);
+};
