@@ -1,7 +1,6 @@
 import { Config, IDatabase } from '@common/config';
 import * as ConfigApi from '@renderer/api/config_api';
-import { SuccessPayload } from '@src/common/response';
-import { ErrorPayload } from '@src/common/error';
+import { Response } from '@src/common/response';
 
 export const createConfigStore = () => {
   const configState = {
@@ -12,16 +11,16 @@ export const createConfigStore = () => {
   const loadConfig = async () => {
     const result = await ConfigApi.loadConfig();
     if (result.success) {
-      console.log(`Loaded config: ${JSON.stringify(result.config)}`);
+      console.log(`Loaded config: ${JSON.stringify(result.payload.config)}`);
       configState.loaded = true;
-      configState.config = result.config;
+      configState.config = result.payload.config;
     } else {
       configState.loaded = false;
       console.error(`Error getting config: ${result.error}`);
     }
   };
 
-  const handleSuccessResult = async (result: SuccessPayload | ErrorPayload, action: string) => {
+  const handleSuccessResult = async (result: Response, action: string) => {
     if (result.success) {
       await loadConfig();
     } else {

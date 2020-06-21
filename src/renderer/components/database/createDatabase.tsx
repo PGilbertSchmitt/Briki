@@ -18,10 +18,10 @@ export const CreateDatabase: FC = () => {
   const saveHandler = useCallback(async () => {
     console.log('called db creator');
     const result = await chooseDirectory();
-    if (result.success && result.dir) {
+    if (result.success && result.payload.dir) {
       await configHooks.saveDb({
         name,
-        file: `${result.dir}/${name}.sqlite`
+        file: `${result.payload.dir}/${name}.sqlite`
       });
       setName('');
       refresh();
@@ -31,10 +31,10 @@ export const CreateDatabase: FC = () => {
   const findHandler = useCallback(async () => {
     console.log('called file finder');
     const result = await chooseFile();
-    if (result.success && result.file) {
+    if (result.success && result.payload.file) {
       await configHooks.registerDb({
-        name: name || parse(result.file).name,
-        file: result.file
+        name: name || parse(result.payload.file).name,
+        file: result.payload.file
       });
       setName('');
       refresh();

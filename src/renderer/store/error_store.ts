@@ -1,11 +1,10 @@
 import { head, drop } from 'ramda';
-import { IError } from '@common/error';
 
 export const createErrorStore = () => {
-  let errorQueue: IError[] = [];
+  let errorQueue: string[] = [];
 
   const pushError = (error: string) => {
-    errorQueue.push({ message: error });
+    errorQueue.push(error);
   };
 
   const nextError = () => {

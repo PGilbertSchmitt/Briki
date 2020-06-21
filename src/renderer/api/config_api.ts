@@ -3,7 +3,6 @@
  */
 
 import { Channels, ConfigPayload, IDatabase } from '@common/config';
-import { SuccessPayload } from '@common/response';
 import { handleRequest } from './request_handler';
 
 export const loadConfig = async () => {
@@ -11,13 +10,13 @@ export const loadConfig = async () => {
 };
 
 export const saveNewDB = async (db: IDatabase) => {
-  return await handleRequest<SuccessPayload>(Channels.SAVE_DB, db);
+  return await handleRequest(Channels.SAVE_DB, db);
 };
 
 export const registerDb = async (db: IDatabase) => {
-  return await handleRequest<SuccessPayload>(Channels.REGISTER_DB, db);
+  return await handleRequest(Channels.REGISTER_DB, db);
 };
 
 export const removeDb = async (filename: string) => {
-  return await handleRequest<SuccessPayload>(Channels.REMOVE_DB, filename);
+  return await handleRequest(Channels.REMOVE_DB, filename);
 };

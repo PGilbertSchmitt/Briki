@@ -4,11 +4,13 @@ import { initializeDbService } from './db_service';
 import { initializeDbController } from './db_controller';
 import { initializeConfigController } from './config_controller';
 import { initializeUtilController } from './util_controller';
+import { initializeQueryController } from './query_controller';
 import { darkTheme } from '@common/theme';
 
 const dbService = initializeDbService();
 initializeDbController(dbService);
 initializeConfigController(dbService);
+initializeQueryController(dbService);
 
 const createWindow = () => {
   // Create the browser window.

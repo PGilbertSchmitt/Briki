@@ -1,21 +1,24 @@
 import { ipcMain } from 'electron';
-import { ErrorPayload } from '@common/error';
+import { Response } from '@common/response';
 
-type handlerCallback<T extends unknown[]> = (
-  ...args: T
-) => Promise<unknown>;
+type handlerCallback<T> = (
+  ...args: unknown[]
+) => Promise<T>;
 
 let messageId = 0;
 
-export const registerHandler = <T extends unknown[]>(channel: string, cb: handlerCallback<T>) => {
-  ipcMain.handle(channel, async (_event, ...args: T): Promise<unknown | ErrorPayload> => {
+export const registerHandler = <T = void>(channel: string, cb: handlerCallback<T>) => {
+  ipcMain.handle(channel, async (_event, ...args: unknown[]): Promise<Response<T>> => {
     try {
       console.log(
         `[${messageId}] Received call to ${channel} with args: ${JSON.stringify(args)}`
       );
       const result = await cb(...args);
       console.log(`[${messageId}] Replied with ${JSON.stringify(result)}`);
-      return result;
+      return {
+        success: true,
+        payload: result,
+      };
     } catch (error) {
       return {
         success: false,

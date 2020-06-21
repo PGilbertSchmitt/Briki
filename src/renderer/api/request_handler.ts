@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
-import { ErrorPayload } from '@common/error';
+import { Response } from '@common/response';
 
-export const handleRequest = <T>(channel: string, ...args: unknown[]) => {
-  return ipcRenderer.invoke(channel, ...args) as Promise<T | ErrorPayload>;
+export const handleRequest = <T = void>(channel: string, ...args: unknown[]) => {
+  return ipcRenderer.invoke(channel, ...args) as Promise<Response<T>>;
 };

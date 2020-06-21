@@ -43,9 +43,10 @@ module.exports = {
     ]
   },
   externals: {
-    "sqlite3": "commonjs sqlite3"
+    "sqlite3": "commonjs sqlite3",
+    "knex": "commonjs knex",
   },
-  devtool: 'source-maps',
+  devtool: "source-maps",
   module: {
     rules: [
       {

@@ -4,7 +4,6 @@
 
 import Store from 'electron-store';
 import { Channels, Config, ConfigPayload, IDatabase } from '@common/config';
-import { SuccessPayload } from '@common/response';
 import { registerHandler } from './response_handler';
 import { DbService } from './db_service';
 
@@ -26,31 +25,30 @@ export const initializeConfigController = (dbService: DbService) => {
     };
   });
 
-  registerHandler<[IDatabase]>(Channels.SAVE_DB, async (db): Promise<SuccessPayload> => {
+  registerHandler(Channels.SAVE_DB, async (db: IDatabase): Promise<void> => {
     console.log('Creating new DB...');
-    await dbService.init(db.file);
+    await dbService.open(db.file);
+    await dbService.initDb();
+    await dbService.close();
 
     console.log('DB file created, saving to config...');
     const current = store.get('databases');
     store.set('databases', [ ...current, db ]);
     console.log('db config saved');
-    return { success: true };
   });
 
-  registerHandler<[IDatabase]>(Channels.REGISTER_DB, async (db): Promise<SuccessPayload> => {
+  registerHandler(Channels.REGISTER_DB, async (db: IDatabase): Promise<void> => {
     console.log('Registering db...');
     const current = store.get('databases');
     store.set('databases', [ ...current, db ]);
     console.log('db config saved');
-    return { success: true };
   });
 
-  registerHandler(Channels.REMOVE_DB, async (filename: string): Promise<SuccessPayload> => {
+  registerHandler(Channels.REMOVE_DB, async (filename: string): Promise<void> => {
     console.log('Removing db...');
     const current = store.get('databases');
     store.set('databases', current.filter(({ file }) => file !== filename));
     console.log('db config removed');
-    return { success: true };
   });
 
   console.log('Config initialized');
