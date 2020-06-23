@@ -1,6 +1,7 @@
 import { isNil } from 'ramda';
-import { Tables, PageRecord, PageResult } from '@common/queries';
 import Knex from 'knex';
+import { Tables, PageRecord, PatchRecord, PageEdit, PatchIndex } from '@common/queries';
+import { makePatch } from '@common/dmf';
 
 const knexConfig = (filename: string) => ({
   client: 'sqlite3',
@@ -10,7 +11,7 @@ const knexConfig = (filename: string) => ({
 
 export const initializeDbService = () => {
   const dbState = {
-    client: null as Knex | null
+    client: null as Knex | null,
   };
 
   const getClient = () => {
@@ -31,32 +32,116 @@ export const initializeDbService = () => {
     },
 
     initDb: async () => {
-      if (isNil(dbState.client)) {
-        throw new Error('No sqlite connection established');
-      }
+      const client = getClient();
 
-      return await dbState.client?.schema.createTable(Tables.PAGES, table => {
-        table.increments();
-        table.string('title').unique().notNullable();
-        table.text('content').notNullable();
-        table.timestamps(false, true);
+      await client.transaction(async trx => {
+        await trx.schema.createTable(Tables.PAGES, table => {
+          table.increments();
+
+          table.string('title')
+               .notNullable();
+
+          table.integer('version')
+               .notNullable();
+               
+          table.string('slug')
+               .notNullable()
+               .unique();
+
+          table.text('content')
+               .notNullable();
+
+          table.timestamps(false, true);
+        });
+  
+        await trx.schema.createTable(Tables.PATCHES, table => {
+          table.increments();
+
+          table.string('title')
+               .notNullable();
+
+          table.integer('version')
+               .notNullable();
+
+          table.integer('page_id')
+               .unsigned()
+               .notNullable();
+          table.foreign('page_id')
+               .references('pages.id');
+
+          table.json('patch')
+               .notNullable();
+
+          table.timestamp('created_at')
+               .defaultTo(client.fn.now());      
+        });
       });
     },
 
     /**
      * Creates new page index, returning the ID of the new row
      */
-    createPage: async (page: PageRecord) => {
-      const ids = (await getClient()(Tables.PAGES).insert(page));
-      return ids[0];
+    createPage: async (page: PageEdit): Promise<number> => {
+      const client = getClient();
+
+      return await client.transaction(async trx => {
+        const [ page_id ] = await trx<PageRecord>(Tables.PAGES).insert<number[]>({
+          ...page,
+          version: 1,
+        });
+
+        await trx<PatchRecord>(Tables.PATCHES).insert({
+          title: page.title,
+          page_id,
+          patch: JSON.stringify(makePatch('', page.content)),
+          version: 1,
+        });
+
+        return page_id;
+      });
     },
 
-    selectPage: async (title: string) => {
-      const pages = await getClient()<PageRecord, PageResult[]>(Tables.PAGES)
+    selectPage: async (slug: string): Promise<PageRecord> => {
+      const pages = await getClient()<PageRecord>(Tables.PAGES)
         .select()
-        .where({ title })
-        .limit(1);
+        .where({ slug });
       return pages[0];
+    },
+
+    updatePage: async (id: number, page: PageEdit): Promise<number> => {
+      const client = getClient();
+
+      return await client.transaction(async trx => {
+        const [ orig ] = await trx<PageRecord>(Tables.PAGES)
+          .select('content', 'version')
+          .where({ id });
+
+        const newVersion = orig.version + 1;
+
+        const row_id = await trx<PageRecord>(Tables.PAGES)
+          .where({ id })
+          .update({
+            ...page,
+            version: newVersion
+          });
+
+        await trx<PatchRecord>(Tables.PATCHES).insert({
+          title: page.title,
+          page_id: id,
+          patch: JSON.stringify(makePatch(orig.content, page.content)),
+          version: newVersion
+        });
+
+        return row_id;
+      });
+    },
+
+    getPatchIndex: async (pageId: number): Promise<PatchIndex[]> => {
+      const client = getClient();
+
+      return await client<PatchRecord, PatchIndex[]>(Tables.PATCHES)
+        .select('id', 'version')
+        .where({ page_id: pageId });
     },
   };
 };

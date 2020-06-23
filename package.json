@@ -17,6 +17,7 @@
   "author": "pgilbertschmitt@gmail.com",
   "license": "MIT",
   "dependencies": {
+    "diff-match-patch-typescript": "^1.0.7",
     "electron-store": "^5.2.0",
     "knex": "^0.21.1",
     "mtj-react": "0.0.2",

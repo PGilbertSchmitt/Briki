@@ -20,6 +20,7 @@ export const registerHandler = <T = void>(channel: string, cb: handlerCallback<T
         payload: result,
       };
     } catch (error) {
+      console.error(error.stack);
       return {
         success: false,
         error,

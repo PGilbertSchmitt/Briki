@@ -10,7 +10,7 @@ import { DbService } from './db_service';
 import {
   Channels,
   PageRecord,
-  PageResult,
+  PageEdit,
 } from '@common/queries';
 
 export const initializeQueryController = (dbService: DbService) => {
@@ -21,10 +21,17 @@ export const initializeQueryController = (dbService: DbService) => {
     }
   );
 
-  registerHandler<PageResult>(
+  registerHandler<PageRecord>(
     Channels.SELECT_PAGE,
-    async (title: string): Promise<PageResult> => {
-      return await dbService.selectPage(title);
+    async (slug: string): Promise<PageRecord> => {
+      return await dbService.selectPage(slug);
+    }
+  );
+
+  registerHandler<number>(
+    Channels.UPDATE_PAGE,
+    async (id: number, page: PageEdit) => {
+      return await dbService.updatePage(id, page);
     }
   );
 };
