@@ -1,6 +1,6 @@
 import { isNil } from 'ramda';
 import Knex from 'knex';
-import { Tables, PageRecord, PatchRecord, PageEdit, PatchIndex } from '@common/queries';
+import { Tables, PageRecord, PatchRecord, PageEdit, PatchIndex, PageIndex } from '@common/queries';
 import { makePatch } from '@common/dmf';
 
 const knexConfig = (filename: string) => ({
@@ -78,10 +78,14 @@ export const initializeDbService = () => {
       });
     },
 
+    getPageIndex: async (): Promise<PageIndex[]> => {
+      return await getClient()<PageRecord>(Tables.PAGES).select('id', 'slug', 'title');
+    },
+
     /**
      * Creates new page index, returning the ID of the new row
      */
-    createPage: async (page: PageEdit): Promise<number> => {
+    createPage: async (page: PageEdit): Promise<PageRecord> => {
       const client = getClient();
 
       return await client.transaction(async trx => {
@@ -97,14 +101,20 @@ export const initializeDbService = () => {
           version: 1,
         });
 
-        return page_id;
+        const [ pageRecord ] = await trx<PageRecord>(Tables.PAGES)
+          .select()
+          .where({
+            id: page_id
+          });
+        
+        return pageRecord;
       });
     },
 
-    selectPage: async (slug: string): Promise<PageRecord> => {
+    selectPage: async (id: number): Promise<PageRecord> => {
       const pages = await getClient()<PageRecord>(Tables.PAGES)
         .select()
-        .where({ slug });
+        .where({ id });
       return pages[0];
     },
 

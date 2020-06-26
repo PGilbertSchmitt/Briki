@@ -1,12 +1,22 @@
-import { Channels, PageEdit, PatchIndex } from '@common/queries';
+import {
+  Channels,
+  PageEdit,
+  PageIndex,
+  PageRecord,
+  PatchIndex,
+} from '@common/queries';
 import { handleRequest } from './request_handler';
 
-export const createPage = async (page: PageEdit) => {
-  return await handleRequest<number>(Channels.CREATE_PAGE, page);
+export const getPageIndex = async () => {
+  return await handleRequest<PageIndex[]>(Channels.GET_PAGE_INDEX);
 };
 
-export const getPage = async (slug: string) => {
-  return await handleRequest(Channels.SELECT_PAGE, slug);
+export const createPage = async (page: PageEdit) => {
+  return await handleRequest<PageRecord>(Channels.CREATE_PAGE, page);
+};
+
+export const getPage = async (id: number) => {
+  return await handleRequest<PageRecord>(Channels.SELECT_PAGE, id);
 };
 
 export const updatePage = async (id: number, page: PageEdit) => {

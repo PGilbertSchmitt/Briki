@@ -11,28 +11,36 @@ import {
   Channels,
   PageRecord,
   PageEdit,
+  PageIndex,
 } from '@common/queries';
 
 export const initializeQueryController = (dbService: DbService) => {
-  registerHandler<number>(
+  registerHandler<PageIndex[]>(
+    Channels.GET_PAGE_INDEX,
+    async () => {
+      return await dbService.getPageIndex();
+    },
+  );
+  
+  registerHandler<PageRecord>(
     Channels.CREATE_PAGE,
-    async (page: PageRecord): Promise<number> => {
+    async (page: PageEdit) => {
       return await dbService.createPage(page);
-    }
+    },
   );
 
   registerHandler<PageRecord>(
     Channels.SELECT_PAGE,
-    async (slug: string): Promise<PageRecord> => {
-      return await dbService.selectPage(slug);
-    }
+    async (id: number) => {
+      return await dbService.selectPage(id);
+    },
   );
 
   registerHandler<number>(
     Channels.UPDATE_PAGE,
     async (id: number, page: PageEdit) => {
       return await dbService.updatePage(id, page);
-    }
+    },
   );
 };
  

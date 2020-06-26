@@ -1,4 +1,5 @@
 export enum Channels {
+  GET_PAGE_INDEX = 'GET_PAGE_INDEX',
   CREATE_PAGE = 'CREATE_PAGE',
   UPDATE_PAGE = 'UPDATE_PAGE',
   SELECT_PAGE = 'SELECT_PAGE',
@@ -26,7 +27,8 @@ export interface PageRecord {
   updated_at: string;
 }
 
-export type PageEdit = Pick<PageRecord, 'title' | 'slug' | 'content'>
+export type PageIndex = Pick<PageRecord, 'id' | 'slug' | 'title'>;
+export type PageEdit = Pick<PageRecord, 'title' | 'slug' | 'content'>;
 
 export interface PatchRecord {
   // Row ID
@@ -44,3 +46,6 @@ export interface PatchRecord {
 }
 
 export type PatchIndex = Pick<PatchRecord, 'id' | 'version'>;
+
+// Potentially useful
+type UnSaved<T extends { id: number; }> = Partial<Pick<T, 'id'>> & Omit<T, 'id'>;
