@@ -1,14 +1,14 @@
 import {
   Channels,
   PageEdit,
-  PageIndex,
+  PageIndexItem,
   PageRecord,
   PatchIndex,
 } from '@common/queries';
 import { handleRequest } from './request_handler';
 
 export const getPageIndex = async () => {
-  return await handleRequest<PageIndex[]>(Channels.GET_PAGE_INDEX);
+  return await handleRequest<PageIndexItem[]>(Channels.GET_PAGE_INDEX);
 };
 
 export const createPage = async (page: PageEdit) => {

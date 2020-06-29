@@ -1,6 +1,13 @@
 import { isNil } from 'ramda';
 import Knex from 'knex';
-import { Tables, PageRecord, PatchRecord, PageEdit, PatchIndex, PageIndex } from '@common/queries';
+import {
+  Tables,
+  PageRecord,
+  PatchRecord,
+  PageEdit,
+  PatchIndex,
+  PageIndexItem,
+} from '@common/queries';
 import { makePatch } from '@common/dmf';
 
 const knexConfig = (filename: string) => ({
@@ -78,7 +85,7 @@ export const initializeDbService = () => {
       });
     },
 
-    getPageIndex: async (): Promise<PageIndex[]> => {
+    getPageIndex: async (): Promise<PageIndexItem[]> => {
       return await getClient()<PageRecord>(Tables.PAGES).select('id', 'slug', 'title');
     },
 

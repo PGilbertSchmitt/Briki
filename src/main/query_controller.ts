@@ -11,11 +11,11 @@ import {
   Channels,
   PageRecord,
   PageEdit,
-  PageIndex,
+  PageIndexItem,
 } from '@common/queries';
 
 export const initializeQueryController = (dbService: DbService) => {
-  registerHandler<PageIndex[]>(
+  registerHandler<PageIndexItem[]>(
     Channels.GET_PAGE_INDEX,
     async () => {
       return await dbService.getPageIndex();

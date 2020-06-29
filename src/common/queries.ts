@@ -27,7 +27,7 @@ export interface PageRecord {
   updated_at: string;
 }
 
-export type PageIndex = Pick<PageRecord, 'id' | 'slug' | 'title'>;
+export type PageIndexItem = Pick<PageRecord, 'id' | 'slug' | 'title'>;
 export type PageEdit = Pick<PageRecord, 'title' | 'slug' | 'content'>;
 
 export interface PatchRecord {
