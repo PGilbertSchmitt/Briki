@@ -14,7 +14,7 @@ export const createPageStore = () => {
     pages: new Map(),
   };
 
-  const getIndex = async () => {
+  const loadIndex = async () => {
     const response = await QueryApi.getPageIndex();
     if (response.success) {
       pageStore.index = new Map();
@@ -36,8 +36,19 @@ export const createPageStore = () => {
     if (response.success) {
       const record = response.payload;
       pageStore.pages.set(record.id, record);
+      return record;
     } else {
       console.log(`Error fetching page: ${response.error}`);
+    }
+  };
+
+  const getPageBySlug = async (slug: string) => {
+    const indexItem = pageStore.index.get(slug);
+    if (!indexItem) {
+      console.log(`No page found for slug ${slug}`);
+    } else {
+      console.log(`Found page with slug ${slug}`);
+      return await getPage(indexItem.id);
     }
   };
 
@@ -56,8 +67,9 @@ export const createPageStore = () => {
   return {
     pageStore,
     pageHooks: {
-      getIndex,
+      loadIndex,
       getPage,
+      getPageBySlug,
       createNewPage,
     },
   };
