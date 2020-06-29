@@ -2,12 +2,13 @@ import React, { FC, useState, useEffect } from 'react';
 import { RouteProps, Redirect } from 'react-router-dom';
 import { PageRecord } from '@common/queries';
 import { pageHooks } from '@renderer/store/root_store';
+import { withTopMenu } from '@renderer/components/nav/top_menu';
 
 const extractPage = (url: string) => {
   return url.substr(6);
 };
 
-export const PageRouter: FC<RouteProps> = ({ location }) => {
+export const _PageRouter: FC<RouteProps> = ({ location }) => {
   if (!location || location.pathname === '') {
     // TODO: Add error message that the page couldn't be found
     return <Redirect to='/page-index' />;
@@ -31,3 +32,5 @@ export const PageRouter: FC<RouteProps> = ({ location }) => {
     </div>
   );
 };
+
+export const PageRouter = withTopMenu(_PageRouter);

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { PageIndexItem } from '@common/queries';
 import { store, pageHooks } from '@renderer/store/root_store';
 import { refresh } from '@renderer/render_state';
+import { withTopMenu } from '@renderer/components/nav/top_menu';
 
 const IndexItem: FC<{ item: PageIndexItem; }> = ({ item }) => (
   <div>
@@ -11,7 +12,7 @@ const IndexItem: FC<{ item: PageIndexItem; }> = ({ item }) => (
   </div>
 );
 
-export const PageIndex: FC = () => {
+const _PageIndex: FC = () => {
   useEffect(() => {
     pageHooks.loadIndex().then(refresh);
   }, []);
@@ -29,3 +30,5 @@ export const PageIndex: FC = () => {
     </div>
   );
 };
+
+export const PageIndex = withTopMenu(_PageIndex);
