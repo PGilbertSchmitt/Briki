@@ -3,7 +3,7 @@ import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import * as rootStore from '@renderer/store/root_store';
 import { WikiSelect } from './database/wikiSelect';
 import { PageIndex } from './index/index';
-import { PageRouter } from './page/PageRouter';
+import { PageRouter } from './page/page_router';
 
 export const Root: FC = () => {
   /* eslint-disable */

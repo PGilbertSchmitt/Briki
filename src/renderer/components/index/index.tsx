@@ -1,8 +1,7 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { PageIndexItem } from '@common/queries';
 import { store, pageHooks } from '@renderer/store/root_store';
-import { refresh } from '@renderer/render_state';
 import { withTopMenu } from '@renderer/components/nav/top_menu';
 
 const IndexItem: FC<{ item: PageIndexItem; }> = ({ item }) => (
@@ -13,19 +12,27 @@ const IndexItem: FC<{ item: PageIndexItem; }> = ({ item }) => (
 );
 
 const _PageIndex: FC = () => {
+  const [ dirty, setDirty ] = useState(true);
+  const [ index, setIndex ] = useState<PageIndexItem[]>([]);
+  
   useEffect(() => {
-    pageHooks.loadIndex().then(refresh);
-  }, []);
+    dirty && pageHooks.getIndex(dirty).then(indexMap => {
+      indexMap && setIndex(Array.from(indexMap).map(([ slug, { id, title } ]) => ({
+        id, title, slug
+      })));
+    });
+    dirty && setDirty(false);
+  }, [ dirty ]);
 
-  if (store.pageStore.index.size === 0)  {
+  if (index.length === 0)  {
     // TODO: Add loading maybe? It's probably too quick to matter, but who knows
     return null;
   }
 
   return (
     <div>
-      {Array.from(store.pageStore.index).map(([ slug, { id, title } ]) => (
-        <IndexItem item={{ slug, id, title }} key={id} />
+      {index.map(item => (
+        <IndexItem item={item} key={item.id} />
       ))}
     </div>
   );

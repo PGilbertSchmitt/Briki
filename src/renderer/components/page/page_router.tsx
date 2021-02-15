@@ -3,6 +3,7 @@ import { RouteProps, Redirect } from 'react-router-dom';
 import { PageRecord } from '@common/queries';
 import { pageHooks } from '@renderer/store/root_store';
 import { withTopMenu } from '@renderer/components/nav/top_menu';
+import { refresh } from '@renderer/render_state';
 
 const extractPage = (url: string) => {
   return url.substr(6);
@@ -17,7 +18,10 @@ export const _PageRouter: FC<RouteProps> = ({ location }) => {
   const [ page, setPage ] = useState<PageRecord>();
 
   useEffect(() => {
-    pageHooks.getPageBySlug(slug).then(page => setPage(page));
+    pageHooks.getPageBySlug(slug).then(page => {
+      setPage(page);
+      refresh();
+    });
   }, [ slug ]);
 
   if (!page) {

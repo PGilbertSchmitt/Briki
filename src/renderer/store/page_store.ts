@@ -22,8 +22,16 @@ export const createPageStore = () => {
         pageStore.index.set(slug, { id, title });
       });
     } else {
+      // Load error
       console.log('');
     }
+  };
+
+  const getIndex = async (refresh = false) => {
+    if (refresh) {
+      await loadIndex();
+    }
+    return pageStore.index;
   };
 
   const getPage = async (id: number) => {
@@ -38,17 +46,19 @@ export const createPageStore = () => {
       pageStore.pages.set(record.id, record);
       return record;
     } else {
+      // Load error
       console.log(`Error fetching page: ${response.error}`);
     }
   };
 
   const getPageBySlug = async (slug: string) => {
-    const indexItem = pageStore.index.get(slug);
-    if (!indexItem) {
-      console.log(`No page found for slug ${slug}`);
-    } else {
-      console.log(`Found page with slug ${slug}`);
+    // Only reload index if the index is empty (unloaded)
+    const indexItem = (await getIndex(pageStore.index.size === 0)).get(slug);
+    if (indexItem) {
       return await getPage(indexItem.id);
+    } else {
+      // Load error
+      console.log(`No page found for slug ${slug}`);
     }
   };
 
@@ -60,17 +70,24 @@ export const createPageStore = () => {
       pageStore.pages.set(id, record);
       pageStore.index.set(slug, { id, title });
     } else {
+      // Load error
       console.log(`Error creating page: ${response.error}`);
     }
+  };
+
+  const removePage = (id: number) => {
+    pageStore.pages.delete(id);
   };
 
   return {
     pageStore,
     pageHooks: {
       loadIndex,
+      getIndex,
       getPage,
       getPageBySlug,
       createNewPage,
+      removePage,
     },
   };
 };
