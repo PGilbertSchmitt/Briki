@@ -60,7 +60,12 @@
     "@typescript-eslint/type-annotation-spacing": "error",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/prefer-as-const": 2,
-    "@typescript-eslint/no-unused-vars": 1,
+    "@typescript-eslint/no-unused-vars": [
+      1,
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
     "@typescript-eslint/member-delimiter-style": [
       2,
       {
