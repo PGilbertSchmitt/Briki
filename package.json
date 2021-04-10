@@ -4,12 +4,12 @@
   "description": "Electron app that acts as a personal wiki",
   "main": "dist/main.js",
   "scripts": {
-    "build": "yarn cp-static && webpack",
+    "build": "npm run cp-static && webpack",
     "lint": "eslint -c .eslintrc.json src/",
     "type-check": "tsc --project tsconfig.json --noEmit --skipLibCheck",
     "cp-static": "mkdir -p dist && cp static/* dist/",
     "start": "electron .",
-    "up": "yarn build && yarn start",
+    "up": "npm run build && npm run start",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps"
@@ -46,7 +46,7 @@
     "@typescript-eslint/eslint-plugin": "^4.13.0",
     "@typescript-eslint/parser": "^4.13.0",
     "babel-loader": "^8.1.0",
-    "electron": "^9.0.2",
+    "electron": "^11.2.3",
     "electron-builder": "^22.7.0",
     "eslint": "^7.2.0",
     "eslint-loader": "^4.0.2",
