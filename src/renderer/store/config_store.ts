@@ -1,6 +1,7 @@
-import { Config, IDatabase } from '@common/config';
+import { Config, IWiki } from '@common/config';
 import * as ConfigApi from '@renderer/api/config_api';
 import { Response } from '@src/common/response';
+import { refresh } from '@renderer/render_state';
 
 export const createConfigStore = () => {
   const configState = {
@@ -18,6 +19,7 @@ export const createConfigStore = () => {
       configState.loaded = false;
       console.error(`Error getting config: ${result.error}`);
     }
+    refresh();
   };
 
   const handleSuccessResult = async (result: Response, action: string) => {
@@ -25,35 +27,35 @@ export const createConfigStore = () => {
       await loadConfig();
     } else {
       // Push error notification here
-      console.log(`Error during db config action [${action}]: ${result.error}`);
+      console.log(`Error during wiki config action [${action}]: ${result.error}`);
     }
   };
 
-  const saveDb = async (db: IDatabase) => {
-    console.log(`Saving a new database to ${db.file}`);
-    const result = await ConfigApi.saveNewDB(db);
-    await handleSuccessResult(result, 'save');
-  };
-
-  const registerDb = async (db: IDatabase) => {
-    console.log(`Registering database ${db.file}`);
-    const result = await ConfigApi.registerDb(db);
+  const registerWiki = async (wiki: IWiki) => {
+    console.log(`Registering database ${wiki.folder}`);
+    const result = await ConfigApi.registerWiki(wiki);
     await handleSuccessResult(result, 'register');
   };
 
-  const removeDb = async (file: string) => {
-    console.log(`Removing ${file} from config`);
-    const result = await ConfigApi.removeDb(file);
+  const removeWiki = async (folder: string) => {
+    console.log(`Removing ${folder} from config`);
+    const result = await ConfigApi.removeWiki(folder);
     await handleSuccessResult(result, 'remove');
+  };
+
+  const renameWiki = async (wiki: IWiki) => {
+    console.log(`Renaming wiki to ${wiki.folder}`);
+    const result = await ConfigApi.renameWiki(wiki);
+    await handleSuccessResult(result, 'rename');
   };
 
   return {
     configState,
     configHooks: {
       loadConfig,
-      saveDb,
-      registerDb,
-      removeDb,
+      registerWiki,
+      removeWiki,
+      renameWiki,
     }
   };
 };

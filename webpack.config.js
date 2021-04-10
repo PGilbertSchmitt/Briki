@@ -42,10 +42,6 @@ module.exports = {
       new tsConfigPathsPlugin()
     ]
   },
-  externals: {
-    "sqlite3": "commonjs sqlite3",
-    "knex": "commonjs knex",
-  },
   devtool: "source-maps",
   module: {
     rules: [

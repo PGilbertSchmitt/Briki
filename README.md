@@ -1,6 +1,8 @@
 # Briki, a Brisk Wiki (??)
 
-Okay, so I wanted a Wiki-writing application that used simple Markdown, stored a file's history, and used Sqlite3 for the file format. Maybe that already exists and I'm just making this for fun. Maybe it's none of your business.
+Okay, so I wanted a Wiki-reading application that used simple Markdown. Maybe I realized that I don't need to save it as a sqlite file. Maybe that already exists and I'm just making this for fun. Maybe it's none of your business.
+
+This application can read a directory tree and render Markdown files. That's it. Maybe one day I'll allow it to edit files as well, or add support for other markups, but for now, I'm not interested. I'm creating this to make it easy to read a "Wiki" that's just several Markdown files in a trenchcoat. VSCode's Markdown preview isn't very wieldy for that.
 
 With that out of the way, what else is there to say?
 

@@ -1,18 +1,15 @@
-import { createDbStore } from './db_store';
 import { createConfigStore } from './config_store';
 import { createErrorStore } from './error_store';
-import { createPageStore } from './page_store';
+import { createWikiStore } from './wiki_store';
 
-const { dbState, dbHooks } = createDbStore();
 const { configState, configHooks } = createConfigStore();
 const { errorQueue, errorHooks } = createErrorStore();
-const { pageStore, pageHooks } = createPageStore();
+const { wikiState, wikiHooks } = createWikiStore();
 
 const store = {
-  dbState,
   configState,
 
-  pageStore,
+  wikiState,
 
   errorQueue,
 };
@@ -20,8 +17,7 @@ const store = {
 export {
   store,
 
-  dbHooks,
   configHooks,
   errorHooks,
-  pageHooks,
+  wikiHooks,
 };

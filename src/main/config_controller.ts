@@ -3,16 +3,16 @@
  */
 
 import Store from 'electron-store';
-import { Channels, Config, ConfigPayload, IDatabase } from '@common/config';
+import { Channels, Config, ConfigPayload, IWiki } from '@common/config';
 import { registerHandler } from './response_handler';
-import { DbService } from './db_service';
 
-export const initializeConfigController = (dbService: DbService) => {
+export const initializeConfigController = () => {
   console.log('Initializing config...');
   
   const store = new Store<Config>({
     defaults: {
-      databases: []
+      wikis: [],
+      savedTheme: 'hello',
     }
   });
 
@@ -20,35 +20,38 @@ export const initializeConfigController = (dbService: DbService) => {
     return {
       success: true,
       config: {
-        databases: store.get('databases')
+        wikis: store.get('wikis'),
+        savedTheme: store.get('savedTheme'),
       }
     };
   });
 
-  registerHandler(Channels.SAVE_DB, async (db: IDatabase): Promise<void> => {
-    console.log('Creating new DB...');
-    await dbService.open(db.file);
-    await dbService.initDb();
-    await dbService.close();
-
-    console.log('DB file created, saving to config...');
-    const current = store.get('databases');
-    store.set('databases', [ ...current, db ]);
-    console.log('db config saved');
+  registerHandler(Channels.REGISTER_WIKI, async (wiki: IWiki): Promise<void> => {
+    console.log('Registering wiki...');
+    const current = store.get('wikis');
+    store.set('wikis', [ ...current, wiki ]);
+    console.log('wiki config saved');
   });
 
-  registerHandler(Channels.REGISTER_DB, async (db: IDatabase): Promise<void> => {
-    console.log('Registering db...');
-    const current = store.get('databases');
-    store.set('databases', [ ...current, db ]);
-    console.log('db config saved');
+  registerHandler(Channels.REMOVE_WIKI, async (folderName: string): Promise<void> => {
+    console.log('Removing wiki...');
+    const current = store.get('wikis');
+    store.set('wikis', current.filter(({ folder }) => folder !== folderName));
+    console.log('wiki config removed');
   });
 
-  registerHandler(Channels.REMOVE_DB, async (filename: string): Promise<void> => {
-    console.log('Removing db...');
-    const current = store.get('databases');
-    store.set('databases', current.filter(({ file }) => file !== filename));
-    console.log('db config removed');
+  registerHandler(Channels.RENAME_WIKI, async (wiki: IWiki): Promise<void> => {
+    console.log('Renaming wiki...');
+    const current = store.get('wikis');
+    const others = current.filter(({ folder }) => folder !== wiki.folder);
+    store.set('wikis', [ ...others, wiki ]);
+    console.log('wiki config renamed');
+  });
+
+  registerHandler(Channels.SELECT_THEME, async (theme: string): Promise<void> => {
+    console.log('Selecting theme...');
+    store.set('savedTheme', theme);
+    console.log('Theme selected');
   });
 
   console.log('Config initialized');

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import * as rootStore from '@renderer/store/root_store';
-import { WikiSelect } from './database/wikiSelect';
+import { WikiSelect } from './wikiSelect/wikiSelect';
 import { PageIndex } from './index/index';
 import { PageRouter } from './page/page_router';
 
@@ -18,10 +18,10 @@ export const Root: FC = () => {
       <Switch>
         <Route exact path='/'>
           {console.log('Hold on just a hot second')}
-          <Redirect to='/database' />
+          <Redirect to='/wiki-select' />
         </Route>
 
-        <Route path='/database' component={WikiSelect} />
+        <Route path='/wiki-select' component={WikiSelect} />
         <Route path='/page-index' exact component={PageIndex} />
         <Route path='/page' component={PageRouter} />
       </Switch>

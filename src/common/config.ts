@@ -1,17 +1,19 @@
 export enum Channels {
   GET_CONFIG = 'GET_CONFIG',
-  SAVE_DB = 'SAVE_DB',
-  REGISTER_DB = 'REGISTER_DB',
-  REMOVE_DB = 'REMOVE_DB',
+  REGISTER_WIKI = 'REGISTER_WIKI',
+  REMOVE_WIKI = 'REMOVE_WIKI',
+  RENAME_WIKI = 'RENAME_WIKI',
+  SELECT_THEME = 'SELECT_THEME',
 }
 
-export interface IDatabase {
+export interface IWiki {
   name: string;
-  file: string;
+  folder: string;
 }
 
 export type Config = {
-  databases: IDatabase[];
+  wikis: IWiki[];
+  savedTheme: string;
 };
 
 export type ConfigPayload = {

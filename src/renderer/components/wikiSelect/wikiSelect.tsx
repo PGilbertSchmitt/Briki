@@ -1,14 +1,13 @@
 import React, { FC, useEffect } from 'react';
 import { store, configHooks } from '@renderer/store/root_store';
-import { refresh } from '@renderer/render_state';
 import {
   Container,
   Divider,
 } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import { CreateDatabase } from './createDatabase';
-import { SelectDatabase } from './selectDatabase';
+import { AddWiki } from './addWiki';
+import { WikiList } from './wikiList';
 
 const SelectWrapper = styled.div`
   width: 400px;
@@ -17,25 +16,25 @@ const SelectWrapper = styled.div`
 
 export const WikiSelect: FC = () => {
   useEffect(() => {
-    configHooks.loadConfig().then(refresh);
+    configHooks.loadConfig();
   }, []);
 
   if (store.configState.config === null) {
     return null;
   }
 
-  const { databases } = store.configState.config;
+  const { wikis } = store.configState.config;
 
   return (
     <SelectWrapper>
-      {databases.length > 0 && (
+      {wikis.length > 0 && (
         <Container>
           <h2>Wikis</h2>
-          <SelectDatabase dbs={store.configState.config.databases} />
+          <WikiList wikis={wikis} />
         </Container>
       )}
       <Divider />
-      <CreateDatabase />
+      <AddWiki />
     </SelectWrapper>
   );
 };

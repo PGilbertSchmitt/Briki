@@ -2,31 +2,29 @@ import React, { FC } from 'react';
 import { Redirect } from 'react-router-dom';
 import { List, Button } from 'semantic-ui-react';
 
-import { IDatabase } from '@common/config';
-import { store, configHooks, dbHooks } from '@renderer/store/root_store';
-import { refresh } from '@renderer/render_state';
+import { IWiki } from '@common/config';
+import { store, configHooks, wikiHooks } from '@renderer/store/root_store';
 
-export const SelectDatabase: FC<{dbs: IDatabase[];}> = ({ dbs }) => {
-  if (store.dbState.db) {
+export const WikiList: FC<{wikis: IWiki[];}> = ({ wikis }) => {
+  if (store.wikiState.loaded) {
     return <Redirect to='/page-index' />;
   }
 
   return (
     <List divided relaxed>
-      {dbs.map((db, i) => (
+      {wikis.map((wiki, i) => (
         <List.Item key={`${i}_wiki`}>
           <List.Content>
             <div onClick={() => {
-              dbHooks.loadDb(db).then(refresh);
+              wikiHooks.setCurrentWiki(wiki);
             }}>
-              <List.Header>{db.name}</List.Header>
-              <List.Description>{db.file}</List.Description>
+              <List.Header>{wiki.name}</List.Header>
+              <List.Description>{wiki.folder}</List.Description>
             </div>
             <Button
               type='button'
               onClick={async () => {
-                await configHooks.removeDb(db.file);
-                refresh();
+                await configHooks.removeWiki(wiki.folder);
               }}
             >Delete</Button>
           </List.Content>
