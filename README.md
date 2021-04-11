@@ -1,4 +1,4 @@
-# Briki, a Brisk Wiki (??)
+# Briki, a Brisk Wiki reader (??)
 
 Okay, so I wanted a Wiki-reading application that used simple Markdown. Maybe I realized that I don't need to save it as a sqlite file. Maybe that already exists and I'm just making this for fun. Maybe it's none of your business.
 

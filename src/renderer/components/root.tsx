@@ -2,8 +2,7 @@ import React, { FC } from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import * as rootStore from '@renderer/store/root_store';
 import { WikiSelect } from './wikiSelect/wikiSelect';
-import { PageIndex } from './index/index';
-import { PageRouter } from './page/page_router';
+import WikiBrowser from './browser/browser';
 
 export const Root: FC = () => {
   /* eslint-disable */
@@ -22,8 +21,10 @@ export const Root: FC = () => {
         </Route>
 
         <Route path='/wiki-select' component={WikiSelect} />
-        <Route path='/page-index' exact component={PageIndex} />
-        <Route path='/page' component={PageRouter} />
+        <Route path='/page-browser' exact>
+          <WikiBrowser />
+        </Route>
+        {/* <Route path='/page' component={PageRouter} /> */}
       </Switch>
     </HashRouter>
   );

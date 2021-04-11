@@ -21,5 +21,5 @@ export interface ITreePayload {
 
 export interface IFilePayload {
   success: true;
-  data: Buffer;
+  data: string;
 }

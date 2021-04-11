@@ -6,8 +6,8 @@ import { IWiki } from '@common/config';
 import { store, configHooks, wikiHooks } from '@renderer/store/root_store';
 
 export const WikiList: FC<{wikis: IWiki[];}> = ({ wikis }) => {
-  if (store.wikiState.loaded) {
-    return <Redirect to='/page-index' />;
+  if (store.wikiState.ref.loaded) {
+    return <Redirect to='/page-browser' />;
   }
 
   return (

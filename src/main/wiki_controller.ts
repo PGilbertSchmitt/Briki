@@ -48,7 +48,7 @@ export const initializeWikiController = async () => {
 
   registerHandler(Channels.LOAD_FILE, async (filePath: string): Promise<IFilePayload> => {
     console.log('Loading file data...');
-    const data = await readFile(filePath);
+    const data = await readFile(filePath, { encoding: 'utf8' });
     console.log('Loaded file data');
 
     return {

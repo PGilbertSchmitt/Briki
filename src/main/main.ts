@@ -2,9 +2,11 @@ import { app, BrowserWindow } from 'electron';
 
 import { initializeConfigController } from './config_controller';
 import { initializeUtilController } from './util_controller';
+import { initializeWikiController } from './wiki_controller';
 import { darkTheme } from '@common/theme';
 
 initializeConfigController();
+initializeWikiController();
 
 const createWindow = () => {
   // Create the browser window.
